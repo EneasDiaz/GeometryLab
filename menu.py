@@ -1,6 +1,7 @@
 import sys  
 import pygame 
 import os
+import submenu
 
 WIDTH, HEIGHT = 960, 540  
 FPS = 60  
@@ -15,8 +16,7 @@ BG = (24, 24, 32)
 
 def main():
     pygame.init()
-
-
+    
     # Para inicializacion de sonido
     pygame.mixer.init() #inicializa el motor de ruido
     pygame.mixer.music.load("assets/sounds/MusicaMenu/menu.mp3") #inicializa el motor de ruido
@@ -43,12 +43,7 @@ def main():
 
     running = True
     while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
+        
 
         # Dibujo
         screen.blit(fondo, (0, 0))
@@ -58,16 +53,27 @@ def main():
         screen.blit(title_surface, title_rect)
 
         niveles = small_font.render("NIVELES", True, (56, 176, 0))
-        hint_rect = niveles.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 40))
-        screen.blit(niveles, hint_rect)
+        hint_niveles_rect = niveles.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 40))
+        screen.blit(niveles, hint_niveles_rect)
 
         creadores = small_font.render("CREADORES", True, (56, 176, 0))
-        hint_rect = creadores.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 80))
-        screen.blit(creadores, hint_rect)
+        hint_creadores_rect = creadores.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 80))
+        screen.blit(creadores, hint_creadores_rect)
 
         quit_surf = small_font.render("SALIR", True, (56, 176, 0))
-        hint_rect = quit_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 120))
-        screen.blit(quit_surf, hint_rect)
+        hint_salir_rect = quit_surf.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 120))
+        screen.blit(quit_surf, hint_salir_rect)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if hint_niveles_rect.collidedict(event.pos):
+                        submenu.submenu(screen)
 
         pygame.display.flip()
         clock.tick(FPS)

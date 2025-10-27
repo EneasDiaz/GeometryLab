@@ -23,7 +23,6 @@ piso = pygame.Rect(0, 550, 800, 50)
 obstaculo = pygame.Rect(800, 500, 50, 50)
 vel = 5
 
-
 en_suelo = True
 vel_y = 0
 gravedad = 1
