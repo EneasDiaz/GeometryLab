@@ -11,7 +11,6 @@ BG = (24, 24, 32)
 def settings(volumen_inicial, brillo_inicial):
     
     pygame.init()
-    pygame.mixer.init()
 
     lista_menu = ["VOLUMEN", "BRILLO", "VOLVER"]  
     eleccion = 0

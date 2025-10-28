@@ -10,10 +10,15 @@ BG = (24, 24, 32)
 
 def inicio():
     pygame.init()
+    pygame.mixer.init()
 
 
     volumen_actual = 50
     brillo_actual  = 75
+
+    pygame.mixer.music.load("assets/sounds/menu.mp3")  # poné el archivo que tengas
+    pygame.mixer.music.set_volume(volumen_actual / 100)
+    pygame.mixer.music.play(-1) 
 
     lista_menu = ["NIVELES", "CREADORES", "SETTING", "SALIR"]  
     eleccion = 0                               
@@ -62,7 +67,7 @@ def inicio():
 
                     elif opcion == "SALIR":
                         anda = False
-                        
+
 
         screen.blit(fondo, (0, 0))
         screen.blit(titulo, ubic_titulo)
