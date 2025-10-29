@@ -1,5 +1,4 @@
 import pygame
-import sys
 
 ancho, alto = 960, 540
 FPS = 60
@@ -8,14 +7,13 @@ GREEN = (158, 240, 26)
 BLACK = (0, 0, 0)
 BG = (80, 80, 80)
 
-def settings(volumen_inicial, brillo_inicial):
-    pygame.init()
+def settings(config):
 
     lista_settings = ["VOLUMEN", "BRILLO", "VOLVER"]
     eleccion = 0
 
-    volumen = volumen_inicial
-    brillo  = brillo_inicial
+    volumen = config["volumen"]
+    brillo  = config["brillo"]
 
     pygame.display.set_caption("Geometry Lab - Settings")          
     ventana = pygame.display.set_mode((ancho, alto))
@@ -34,13 +32,11 @@ def settings(volumen_inicial, brillo_inicial):
     while anda:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-
-                pygame.quit()
-                sys.exit()
+                return None
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    anda = False
+                    return None
 
                 elif event.key == pygame.K_UP:
                     eleccion = (eleccion - 1) % len(lista_settings)
@@ -65,8 +61,7 @@ def settings(volumen_inicial, brillo_inicial):
                 elif event.key == pygame.K_RETURN:
                     opcion = lista_settings[eleccion]
                     if opcion == "VOLVER":
-                        anda = False
-
+                        return {"volumen": volumen,"brillo": brillo}
 
         ventana.blit(fondo, (0, 0))
         ventana.blit(titulo, ubic_titulo)
@@ -76,7 +71,7 @@ def settings(volumen_inicial, brillo_inicial):
 
         largo_barra = 300
         alto_barra = 10
-        bara_color_bg = BG
+        barra_color_bg = BG
         barra_color_select = GREEN
         barra_color_activ = (120, 200, 120)
 
@@ -100,7 +95,7 @@ def settings(volumen_inicial, brillo_inicial):
                 bar_x = ancho // 2 - largo_barra // 2
                 bar_y = item_ubic.bottom + 10
 
-                pygame.draw.rect(ventana,bara_color_bg,(bar_x, bar_y, largo_barra, alto_barra),border_radius=4)
+                pygame.draw.rect(ventana,barra_color_bg,(bar_x, bar_y, largo_barra, alto_barra),border_radius=4)
 
                 relleno = int(largo_barra * (valor / 100))
                 pygame.draw.rect(ventana,barra_color_select if elegido else barra_color_activ,(bar_x, bar_y, relleno, alto_barra),border_radius=4)
@@ -113,6 +108,3 @@ def settings(volumen_inicial, brillo_inicial):
 
         pygame.display.flip()
         clock.tick(FPS)
-
-
-    return volumen, brillo

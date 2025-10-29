@@ -1,25 +1,15 @@
-import sys  
 import pygame 
-from menu_settings import settings
 
 ancho, alto = 960, 540
 FPS = 60
+
 GREEN = (158, 240, 26) 
 BLACK = (0, 0, 0)
 BG = (80, 80, 80)
 
-def inicio():
-    pygame.init()
-    pygame.mixer.init()
+def inicio(config):
 
-    volumen_actual = 50
-    brillo_actual  = 75
-
-    pygame.mixer.music.load("assets/sounds/menu.mp3")
-    pygame.mixer.music.set_volume(volumen_actual / 100)
-    pygame.mixer.music.play(-1)
-
-    lista_inicio = ["NIVELES", "CREADORES", "SETTING", "SALIR"] 
+    lista_inicio = ["NIVELES", "CREADORES", "SETTINGS", "SALIR"] 
     eleccion = 0
 
     pygame.display.set_caption("Geometry Lab")
@@ -39,11 +29,11 @@ def inicio():
     while anda:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                anda = False
+                return "SALIR"
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    anda = False
+                    return "SALIR"
 
                 elif event.key == pygame.K_UP:
                     eleccion = (eleccion - 1) % len(lista_inicio)
@@ -53,19 +43,7 @@ def inicio():
 
                 elif event.key == pygame.K_RETURN:
                     opcion = lista_inicio[eleccion]
-
-                    if opcion == "NIVELES":
-                        print("Entrar a NIVELES...")
-
-                    elif opcion == "CREADORES":
-                        print("Mostrar CREADORES...")
-
-                    elif opcion == "SETTING":
-                        volumen_actual, brillo_actual = settings(volumen_actual, brillo_actual)
-
-                    elif opcion == "SALIR":
-                        anda = False
-
+                    return opcion
 
         ventana.blit(fondo, (0, 0))
         ventana.blit(titulo, ubic_titulo)
@@ -83,7 +61,7 @@ def inicio():
             ventana.blit(list_item, item_ubic)
 
 
-        oscuridad = 200 - int(200 * (brillo_actual / 100))
+        oscuridad = 200 - int(200 * (config["brillo"]  / 100))
         filtro = pygame.Surface((ancho, alto), pygame.SRCALPHA)
         filtro.fill((0, 0, 0, oscuridad))
         ventana.blit(filtro, (0, 0))
@@ -91,10 +69,3 @@ def inicio():
 
         pygame.display.flip()
         clock.tick(FPS)
-
-
-    pygame.quit()
-    sys.exit()
-
-if __name__ == "__main__":
-    inicio()
