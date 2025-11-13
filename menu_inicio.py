@@ -8,32 +8,35 @@ GREEN = (158, 240, 26)
 BLACK = (0, 0, 0)
 BG = (80, 80, 80)
 
-def inicio():
+def opcion_elegida(eleccion, config):
+    if eleccion == "NIVELES":
+        from menu_niveles import niveles
+        niveles(config)
+    if eleccion == "SETTINGS":
+        from menu_settings import settings
+        settings(config)
+    if eleccion == "CREADORES":
+        from creadores import nosotros
+        nosotros(config)
+
+def inicio(config):
     pygame.init()
-    pygame.mixer.init()
 
-    volumen_actual = 50
-    brillo_actual  = 75
-
-    pygame.mixer.music.load("assets/sounds/menu.mp3")
-    pygame.mixer.music.set_volume(volumen_actual / 100)
-    pygame.mixer.music.play(-1)
-
-    lista_inicio = ["NIVELES", "CREADORES", "SETTING", "SALIR"] 
+    lista_inicio = ["NIVELES", "CREADORES", "EXTRAS", "SETTINGS", "SALIR"] 
     eleccion = 0
 
     pygame.display.set_caption("Geometry Lab")
     ventana = pygame.display.set_mode((ancho, alto))
     clock = pygame.time.Clock()
 
-    fondo_convert = pygame.image.load('assets/img/fondo-menu.jpg').convert()       
+    fondo_convert = pygame.image.load('assets/img/fondos/fondo-menu.jpg').convert()       
     fondo = pygame.transform.smoothscale(fondo_convert, (ancho, alto))
 
     fuente_titulo = pygame.font.Font('assets/fonts/ARCADE_I.TTF', 72)
     fuente_items  = pygame.font.Font('assets/fonts/Pinecone-Regular.ttf', 28)
 
     titulo = fuente_titulo.render("GEOMETRY LAB", True, GREEN)
-    ubic_titulo = titulo.get_rect(center=(ancho // 2, alto // 2 - 40))
+    ubic_titulo = titulo.get_rect(center=(ancho // 2, alto // 2 - 80))
 
     anda = True
     while anda:
@@ -53,25 +56,15 @@ def inicio():
 
                 elif event.key == pygame.K_RETURN:
                     opcion = lista_inicio[eleccion]
-
-                    if opcion == "NIVELES":
-                        print("Entrar a NIVELES...")
-
-                    elif opcion == "CREADORES":
-                        print("Mostrar CREADORES...")
-
-                    elif opcion == "SETTING":
-                        volumen_actual, brillo_actual = settings(volumen_actual, brillo_actual)
-
-                    elif opcion == "SALIR":
-                        anda = False
-
+                    return opcion
+               
+                opcion_elegida(eleccion, config)
+                
 
         ventana.blit(fondo, (0, 0))
         ventana.blit(titulo, ubic_titulo)
 
-
-        top_list = alto // 2 + 50
+        top_list = alto // 2 + 10
         gap = 50
 
 
@@ -92,9 +85,15 @@ def inicio():
         pygame.display.flip()
         clock.tick(FPS)
 
+<<<<<<< HEAD
 
     pygame.quit()
     sys.exit()
 
 if __name__ == "__main__":
     inicio()
+=======
+if __name__ == "__main__":
+    config = {"brillo": 100, "volumen":100}
+    inicio(config)
+>>>>>>> niveles
