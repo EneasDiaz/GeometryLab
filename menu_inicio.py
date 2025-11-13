@@ -7,23 +7,35 @@ GREEN = (158, 240, 26)
 BLACK = (0, 0, 0)
 BG = (80, 80, 80)
 
-def inicio(config):
+def opcion_elegida(eleccion, config):
+    if eleccion == "NIVELES":
+        from menu_niveles import niveles
+        niveles(config)
+    if eleccion == "SETTINGS":
+        from menu_settings import settings
+        settings(config)
+    if eleccion == "CREADORES":
+        from creadores import nosotros
+        nosotros(config)
 
-    lista_inicio = ["NIVELES", "CREADORES", "SETTINGS", "SALIR"] 
+def inicio(config):
+    pygame.init()
+
+    lista_inicio = ["NIVELES", "CREADORES", "EXTRAS", "SETTINGS", "SALIR"] 
     eleccion = 0
 
     pygame.display.set_caption("Geometry Lab")
     ventana = pygame.display.set_mode((ancho, alto))
     clock = pygame.time.Clock()
 
-    fondo_convert = pygame.image.load('assets/img/fondo-menu.jpg').convert()       
+    fondo_convert = pygame.image.load('assets/img/fondos/fondo-menu.jpg').convert()       
     fondo = pygame.transform.smoothscale(fondo_convert, (ancho, alto))
 
     fuente_titulo = pygame.font.Font('assets/fonts/ARCADE_I.TTF', 72)
     fuente_items  = pygame.font.Font('assets/fonts/Pinecone-Regular.ttf', 28)
 
     titulo = fuente_titulo.render("GEOMETRY LAB", True, GREEN)
-    ubic_titulo = titulo.get_rect(center=(ancho // 2, alto // 2 - 40))
+    ubic_titulo = titulo.get_rect(center=(ancho // 2, alto // 2 - 80))
 
     anda = True
     while anda:
@@ -44,12 +56,14 @@ def inicio(config):
                 elif event.key == pygame.K_RETURN:
                     opcion = lista_inicio[eleccion]
                     return opcion
+               
+                opcion_elegida(eleccion, config)
+                
 
         ventana.blit(fondo, (0, 0))
         ventana.blit(titulo, ubic_titulo)
 
-
-        top_list = alto // 2 + 50
+        top_list = alto // 2 + 10
         gap = 50
 
 
@@ -69,3 +83,7 @@ def inicio(config):
 
         pygame.display.flip()
         clock.tick(FPS)
+
+if __name__ == "__main__":
+    config = {"brillo": 100, "volumen":100}
+    inicio(config)

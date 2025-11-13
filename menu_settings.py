@@ -8,6 +8,7 @@ BLACK = (0, 0, 0)
 BG = (80, 80, 80)
 
 def settings(config):
+    pygame.init()
 
     lista_settings = ["VOLUMEN", "BRILLO", "VOLVER"]
     eleccion = 0
@@ -19,7 +20,7 @@ def settings(config):
     ventana = pygame.display.set_mode((ancho, alto))
     clock = pygame.time.Clock()
 
-    fondo_convert = pygame.image.load('assets/img/fondo-menu.jpg').convert()        
+    fondo_convert = pygame.image.load('assets/img/fondos/fondo-menu.jpg').convert()        
     fondo = pygame.transform.smoothscale(fondo_convert, (ancho, alto))
 
     fuente_titulo = pygame.font.Font('assets/fonts/ARCADE_I.TTF', 72)
@@ -83,7 +84,6 @@ def settings(config):
             item_ubic = list_item.get_rect(center=(ancho // 2, top_list + i * gap))
             ventana.blit(list_item, item_ubic)
 
-
             if label == "VOLUMEN":
                 valor = volumen
             elif label == "BRILLO":
@@ -95,10 +95,10 @@ def settings(config):
                 bar_x = ancho // 2 - largo_barra // 2
                 bar_y = item_ubic.bottom + 10
 
-                pygame.draw.rect(ventana,barra_color_bg,(bar_x, bar_y, largo_barra, alto_barra),border_radius=4)
+                pygame.draw.rect(ventana,barra_color_bg,(bar_x, bar_y, largo_barra, alto_barra), border_radius=4)
 
                 relleno = int(largo_barra * (valor / 100))
-                pygame.draw.rect(ventana,barra_color_select if elegido else barra_color_activ,(bar_x, bar_y, relleno, alto_barra),border_radius=4)
+                pygame.draw.rect(ventana,barra_color_select if elegido else barra_color_activ, (bar_x, bar_y, relleno, alto_barra), border_radius=4)
 
 
         oscuridad = 200 - int(200 * (brillo / 100))
@@ -108,3 +108,7 @@ def settings(config):
 
         pygame.display.flip()
         clock.tick(FPS)
+
+if __name__ == "__main__":
+    config = {"brillo": 100, "volumen":100}
+    settings(config)

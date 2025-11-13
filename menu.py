@@ -1,7 +1,7 @@
 import sys  
 import pygame 
 import os
-import submenu
+
 
 WIDTH, HEIGHT = 960, 540  
 FPS = 60  
@@ -48,7 +48,7 @@ def main():
         # Dibujo
         screen.blit(fondo, (0, 0))
 
-        title_surface = title_font.render("GEOMETRY LAB", True, WHITE)  # <- ¿typo?
+        title_surface = title_font.render("GEOMETRY LAB", True, WHITE)  
         title_rect = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 40))
         screen.blit(title_surface, title_rect)
 
@@ -73,7 +73,7 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if hint_niveles_rect.collidedict(event.pos):
-                        submenu.submenu(screen)
+                        print("hola")
 
         pygame.display.flip()
         clock.tick(FPS)

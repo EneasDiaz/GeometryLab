@@ -14,7 +14,7 @@ PINK = (153, 46, 157)
 BLACK = (0, 0, 0)       
 BG = (24, 24, 32)
 
-def main():
+def main(config):
     pygame.init()
     
     # Para inicializacion de sonido
@@ -31,7 +31,7 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))        
     clock = pygame.time.Clock()
     
-    FONDO = os.path.join(BASE, "assets", "img", "menucam.jpg")
+    FONDO = os.path.join(BASE, "assets", "img", "fondos", "menucam.jpg")
     fondo_raw = pygame.image.load(FONDO).convert()          
     fondo = pygame.transform.smoothscale(fondo_raw, (WIDTH, HEIGHT))
 
@@ -87,4 +87,5 @@ def main():
     sys.exit()
 
 if __name__ == "__main__":
-    main()
+    config = {"brillo": 100, "volumen":100}
+    main(config)

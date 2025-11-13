@@ -1,7 +1,8 @@
 import sys  
 import pygame 
 import os
-import menu
+from menu_inicio import inicio 
+from menu_settings import settings
 
 # #Largo y Ancho 
 WIDTH = 960
@@ -18,7 +19,8 @@ PURPLE = (80, 20, 180)
 BLACK = (0, 0, 0)       
 BG = (24, 24, 32)        
 
-def submenu():
+
+def niveles(config):
     pygame.init()
 
     # Para inicializacion de sonido
@@ -38,7 +40,7 @@ def submenu():
     clock = pygame.time.Clock()
 
     # Fondo cubitos del jeugo
-    FONDO = os.path.join(BASE, "assets", "img", "fondo-menu.jpg")
+    FONDO = os.path.join(BASE, "assets", "img", "fondos","fondo-menu.jpg")
     fondo_raw = pygame.image.load(FONDO).convert()          
     fondo = pygame.transform.smoothscale(fondo_raw, (WIDTH, HEIGHT))
 
@@ -58,15 +60,15 @@ def submenu():
         title_rect = title_niveles.get_rect(center=(WIDTH // 3 , HEIGHT // 5 - 60))
         screen.blit(title_niveles, title_rect)
 
-        primer_nivel_titulo= medium_font.render("NIVEL 1", True, SKY_BLUE)
+        primer_nivel_titulo= medium_font.render("NIVEL 1", True, WHITE)
         hint_lvl1_rect = primer_nivel_titulo.get_rect(center=(WIDTH // 2 - 300 , HEIGHT // 2 - 60))
         screen.blit(primer_nivel_titulo, hint_lvl1_rect)
 
-        segundo_nivel_titulo = medium_font.render("NIVEL 2", True, BLUE)
+        segundo_nivel_titulo = medium_font.render("NIVEL 2", True, WHITE)
         hint_lvl2_rect = segundo_nivel_titulo.get_rect(center=(WIDTH // 2 , HEIGHT // 2 - 60))
         screen.blit(segundo_nivel_titulo, hint_lvl2_rect)
 
-        tercer_nivel_titulo = medium_font.render("NIVEL 3", True, PURPLE)
+        tercer_nivel_titulo = medium_font.render("NIVEL 3", True, WHITE)
         hint_lvl3_rect = tercer_nivel_titulo.get_rect(center=(WIDTH // 2 + 300, HEIGHT // 2 - 60))
         screen.blit(tercer_nivel_titulo, hint_lvl3_rect)
 
@@ -74,7 +76,7 @@ def submenu():
         hint_volver_rect = quit_surf.get_rect(center=(WIDTH // 2 - 400, HEIGHT // 2 + 220))
         screen.blit(quit_surf, hint_volver_rect)
 
-        setting_surf = small_font.render("OPCIONES", True, WHITE)
+        setting_surf = small_font.render("SETTINGS", True, WHITE)
         hint_opciones_rect = setting_surf.get_rect(center=(WIDTH // 2 + 380, HEIGHT // 2 + 220))
         screen.blit(setting_surf, hint_opciones_rect)
 
@@ -93,9 +95,9 @@ def submenu():
                     elif hint_lvl3_rect.collidepoint(event.pos):
                         print("lvl3")
                     elif hint_volver_rect.collidepoint(event.pos):
-                        print("volver al menu")
+                        inicio(config)
                     elif hint_opciones_rect.collidepoint(event.pos):
-                        print("config")
+                        settings(config)
 
         pygame.display.flip()
         clock.tick(FPS)
@@ -104,7 +106,8 @@ def submenu():
     sys.exit()
 
 if __name__ == "__main__":
-    submenu()
+    config = {"brillo": 100, "volumen":100}
+    niveles(config)
 
 
 
