@@ -38,6 +38,10 @@ def main():
 
     pygame.quit()
     sys.exit()
+en_suelo = True
+vel_y = 0
+gravedad = 1
+fuerza_salto = 20
 
 if __name__ == "__main__":
     main()
