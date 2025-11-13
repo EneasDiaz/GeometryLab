@@ -1,103 +1,120 @@
-import sys  
-import pygame 
+import sys
 import os
-from menu_inicio import inicio 
-from menu_settings import settings
+import pygame
 
-# #Largo y Ancho 
-WIDTH = 960
-HEIGHT = 540  
-FPS = 60  
-MARGEN = 100
+WIDTH, HEIGHT = 960, 540
+FPS = 60
 
-#Colores
 WHITE = (255, 255, 255)
-GREEN = (158, 240, 26)  
-SKY_BLUE = (34, 130, 156)
-BLUE = (30, 60, 140)
-PURPLE = (80, 20, 180)
-BLACK = (0, 0, 0)       
-BG = (24, 24, 32)        
-
+GREEN = (158, 240, 26)
+BLACK = (0, 0, 0)
 
 def niveles(config):
     pygame.init()
 
-    # Para inicializacion de sonido
-    pygame.mixer.init() #inicializa el motor de ruido
-    pygame.mixer.music.load("assets/sounds/MusicaMenu/menu.mp3") #inicializa el motor de ruido
-    pygame.mixer.music.set_volume(0.5) # ver mas adelante y mejorar el ajuste de la musica
-    pygame.mixer.music.play(-1) #ciclo infinito de la musica
-
-    # Path para las letras del juego
     BASE = os.path.dirname(__file__)
     FONT_TITLE = os.path.join(BASE, "assets", "fonts", "ARCADE_I.TTF")
     FONT_LIST  = os.path.join(BASE, "assets", "fonts", "Pinecone-Regular.ttf")
 
-    # Titulo de la ventana saliente
-    pygame.display.set_caption("TP Grupal")              
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))        
+    pygame.display.set_caption("Geometry Lab - Niveles")
+    ventana = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
-    # Fondo cubitos del jeugo
-    FONDO = os.path.join(BASE, "assets", "img", "fondos","fondo-menu.jpg")
-    fondo_raw = pygame.image.load(FONDO).convert()          
+    # Fondo
+    FONDO = os.path.join(BASE, "assets", "img", "fondos", "fondo-menu.jpg")
+    fondo_raw = pygame.image.load(FONDO).convert()
     fondo = pygame.transform.smoothscale(fondo_raw, (WIDTH, HEIGHT))
 
-    # Letras del juego con distintos tamanios 
-    title_font = pygame.font.Font(FONT_TITLE, 70)
-    medium_font = pygame.font.Font(FONT_LIST, 40)
-    small_font = pygame.font.Font(FONT_LIST, 25)
+    fuente_titulo = pygame.font.Font(FONT_TITLE, 70)
+    fuente_item  = pygame.font.Font(FONT_LIST, 40)
 
-    running = True
-    while running:
-        
+    
+    opciones = ["NIVEL 1", "NIVEL 2", "NIVEL 3", "VOLVER"]
+    eleccion = 0
 
-        # Formato/Textos del menu/submenus
-        screen.blit(fondo, (0, 0))
-
-        title_niveles = title_font.render("NIVELES:", True, WHITE) 
-        title_rect = title_niveles.get_rect(center=(WIDTH // 3 , HEIGHT // 5 - 60))
-        screen.blit(title_niveles, title_rect)
-
-        primer_nivel_titulo= medium_font.render("NIVEL 1", True, WHITE)
-        hint_lvl1_rect = primer_nivel_titulo.get_rect(center=(WIDTH // 2 - 300 , HEIGHT // 2 - 60))
-        screen.blit(primer_nivel_titulo, hint_lvl1_rect)
-
-        segundo_nivel_titulo = medium_font.render("NIVEL 2", True, WHITE)
-        hint_lvl2_rect = segundo_nivel_titulo.get_rect(center=(WIDTH // 2 , HEIGHT // 2 - 60))
-        screen.blit(segundo_nivel_titulo, hint_lvl2_rect)
-
-        tercer_nivel_titulo = medium_font.render("NIVEL 3", True, WHITE)
-        hint_lvl3_rect = tercer_nivel_titulo.get_rect(center=(WIDTH // 2 + 300, HEIGHT // 2 - 60))
-        screen.blit(tercer_nivel_titulo, hint_lvl3_rect)
-
-        quit_surf = small_font.render("VOLVER", True, WHITE)
-        hint_volver_rect = quit_surf.get_rect(center=(WIDTH // 2 - 400, HEIGHT // 2 + 220))
-        screen.blit(quit_surf, hint_volver_rect)
-
-        setting_surf = small_font.render("SETTINGS", True, WHITE)
-        hint_opciones_rect = setting_surf.get_rect(center=(WIDTH // 2 + 380, HEIGHT // 2 + 220))
-        screen.blit(setting_surf, hint_opciones_rect)
+    anda = True
+    while anda:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                anda = False
+
             elif event.type == pygame.KEYDOWN:
+
+                
                 if event.key == pygame.K_ESCAPE:
-                    running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1 :
-                    if hint_lvl1_rect.collidepoint(event.pos):
-                        print("lvl1")
-                    elif hint_lvl2_rect.collidepoint(event.pos):
-                        print("lvl2")
-                    elif hint_lvl3_rect.collidepoint(event.pos):
-                        print("lvl3")
-                    elif hint_volver_rect.collidepoint(event.pos):
-                        inicio(config)
-                    elif hint_opciones_rect.collidepoint(event.pos):
-                        settings(config)
+                    from menu_inicio import inicio
+                    inicio(config)
+                    return
+
+                
+                elif event.key == pygame.K_LEFT:
+                    if eleccion in [0, 1, 2]:
+                        eleccion = (eleccion - 1) % 3
+
+                elif event.key == pygame.K_RIGHT:
+                    if eleccion in [0, 1, 2]:
+                        eleccion = (eleccion + 1) % 3
+
+                
+                elif event.key == pygame.K_UP:
+                    if eleccion == 3:
+                        eleccion = 1
+
+                elif event.key == pygame.K_DOWN:
+                    if eleccion in [0, 1, 2]:
+                        eleccion = 3
+
+
+                elif event.key == pygame.K_RETURN:
+                    opcion = opciones[eleccion]
+
+                    if opcion == "NIVEL 1":
+                        print("Cargar nivel 1")
+                    elif opcion == "NIVEL 2":
+                        print("Cargar nivel 2")
+                    elif opcion == "NIVEL 3":
+                        print("Cargar nivel 3")
+                    elif opcion == "VOLVER":
+                        return
+
+
+        ventana.blit(fondo, (0, 0))
+
+
+        titulo = fuente_titulo.render("NIVELES", True, WHITE)
+        ubic_titulo = titulo.get_rect(center=(WIDTH // 2, HEIGHT // 5 - 30))
+        ventana.blit(titulo, ubic_titulo)
+
+
+        y_niveles = HEIGHT // 2 - 40
+
+        x1 = WIDTH // 2 - 250
+        x2 = WIDTH // 2
+        x3 = WIDTH // 2 + 250
+
+        coords = [(x1, y_niveles), (x2, y_niveles), (x3, y_niveles)]
+
+        for i, (texto, (cx, cy)) in enumerate(zip(opciones[:3], coords)):
+            seleccionado = (eleccion == i)
+            color = GREEN if seleccionado else (180, 180, 200)
+
+            item = fuente_item.render(texto, True, color)
+            rect = item.get_rect(center=(cx, cy))
+            ventana.blit(item, rect)
+
+        seleccionado = (eleccion == 3)
+        color = GREEN if seleccionado else (180, 180, 200)
+
+        volver_item = fuente_item.render("VOLVER", True, color)
+        volver_rect = volver_item.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 140))
+        ventana.blit(volver_item, volver_rect)
+
+        brillo = config.get("brillo", 100)
+        oscuridad = 200 - int(200 * (brillo / 100))
+        filtro = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        filtro.fill((0, 0, 0, oscuridad))
+        ventana.blit(filtro, (0, 0))
 
         pygame.display.flip()
         clock.tick(FPS)
@@ -105,10 +122,7 @@ def niveles(config):
     pygame.quit()
     sys.exit()
 
+
 if __name__ == "__main__":
-    config = {"brillo": 100, "volumen":100}
+    config = {"brillo": 100, "volumen": 100}
     niveles(config)
-
-
-
-

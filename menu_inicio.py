@@ -1,6 +1,10 @@
 import sys  
 import pygame 
+
+from menu_niveles import niveles
 from menu_settings import settings
+from menu_extras import extras
+from menu_creadores import creadores
 
 ancho, alto = 960, 540
 FPS = 60
@@ -8,19 +12,28 @@ GREEN = (158, 240, 26)
 BLACK = (0, 0, 0)
 BG = (80, 80, 80)
 
-def opcion_elegida(eleccion, config):
-    if eleccion == "NIVELES":
-        from menu_niveles import niveles
+def opcion_elegida(opcion, config):
+    if opcion == "NIVELES":
         niveles(config)
-    if eleccion == "SETTINGS":
-        from menu_settings import settings
+    elif opcion == "CREADORES":
+        creadores(config)
+    elif opcion == "EXTRAS":
+        extras(config)
+    elif opcion == "SETTINGS":
         settings(config)
-    if eleccion == "CREADORES":
-        from creadores import nosotros
-        nosotros(config)
+    elif opcion == "SALIR":
+        pygame.quit()
+        sys.exit()
 
 def inicio(config):
     pygame.init()
+
+
+    pygame.mixer.init()
+    pygame.mixer.music.load("assets/sounds/MusicaMenu/menu.mp3")
+    pygame.mixer.music.set_volume(config.get("volumen", 100) / 100)
+    pygame.mixer.music.play(-1)
+
 
     lista_inicio = ["NIVELES", "CREADORES", "EXTRAS", "SETTINGS", "SALIR"] 
     eleccion = 0
@@ -56,10 +69,8 @@ def inicio(config):
 
                 elif event.key == pygame.K_RETURN:
                     opcion = lista_inicio[eleccion]
-                    return opcion
-               
-                opcion_elegida(eleccion, config)
-                
+                    opcion_elegida(opcion,config)
+
 
         ventana.blit(fondo, (0, 0))
         ventana.blit(titulo, ubic_titulo)
@@ -75,25 +86,17 @@ def inicio(config):
             item_ubic = list_item.get_rect(center=(ancho // 2, top_list + i * gap))
             ventana.blit(list_item, item_ubic)
 
-
-        oscuridad = 200 - int(200 * (brillo_actual / 100))
+        brillo = config.get("brillo", 100)
+        oscuridad = 200 - int(200 * (brillo / 100))
         filtro = pygame.Surface((ancho, alto), pygame.SRCALPHA)
         filtro.fill((0, 0, 0, oscuridad))
         ventana.blit(filtro, (0, 0))
 
-
         pygame.display.flip()
         clock.tick(FPS)
-
-<<<<<<< HEAD
 
     pygame.quit()
     sys.exit()
 
 if __name__ == "__main__":
-    inicio()
-=======
-if __name__ == "__main__":
-    config = {"brillo": 100, "volumen":100}
-    inicio(config)
->>>>>>> niveles
+    inicio({"brillo":100})
