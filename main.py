@@ -1,47 +1,76 @@
 import pygame
 import sys
-from menu_inicio import inicio
-from menu_settings import settings
+import random
 
-def main():
-    pygame.init()
-    pygame.mixer.init()
+pygame.init()
 
-    config = {
-        "volumen": 50,
-        "brillo": 75,
-    }
+# Configuración de la ventana
+ANCHO, ALTO = 800, 600
+pantalla = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Geometry Lab")
 
-    pygame.mixer.music.load("assets/sounds/menu.mp3")
-    pygame.mixer.music.set_volume(config["volumen"] / 100)
-    pygame.mixer.music.play(-1)
 
-    anda = True
-    while anda:
-        accion = inicio(config)
+NEGRO = (0, 0, 0)
+BLANCO = (255, 255, 255)
+ROJO = (255, 0, 0)
+AZUL = (0, 0, 255)
 
-        if accion == "SETTINGS":
-            config = settings(config)
-            if config is None:
-                anda = False
-                break
-            pygame.mixer.music.set_volume(config["volumen"] / 100) 
 
-        elif accion == "NIVELES":
-            print("ir a seleccionar nivel (después hacemos menu_niveles)")
+reloj = pygame.time.Clock()
 
-        elif accion == "CREADORES":
-            print("mostrar créditos / creadores")
+jugador = pygame.Rect(50, 500, 50, 50)  # x, y, ancho, alto
+piso = pygame.Rect(0, 550, 800, 50)
+obstaculo = pygame.Rect(800, 500, 50, 50)
+vel = 5
 
-        elif accion == "SALIR":
-            anda = False
 
-    pygame.quit()
-    sys.exit()
+pygame.quit()
+sys.exit()
 en_suelo = True
 vel_y = 0
 gravedad = 1
 fuerza_salto = 20
 
-if __name__ == "__main__":
-    main()
+
+while True:
+
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    teclas = pygame.key.get_pressed()
+
+
+    if teclas[pygame.K_SPACE] and en_suelo:
+        vel_y = -fuerza_salto
+        en_suelo = False
+
+
+    vel_y += gravedad
+    jugador.y += vel_y
+    jugador.x += vel
+
+
+    if jugador.bottom >= ALTO - 50:
+        jugador.bottom = ALTO - 50
+        vel_y = 0
+        en_suelo = True
+
+
+
+    if obstaculo.right < 0:
+        obstaculo.x = ANCHO + random.randint(100, 300)
+
+    if jugador.colliderect(obstaculo):
+        print("💥 ¡Colisión! Reiniciando obstáculo...")
+        obstaculo.x = ANCHO + random.randint(100, 300)
+
+    pantalla.fill(NEGRO)
+    pygame.draw.rect(pantalla, AZUL, jugador)
+    pygame.draw.rect(pantalla, ROJO, obstaculo)
+    pygame.draw.rect(pantalla, BLANCO, piso)
+    pygame.display.flip()
+
+
+    reloj.tick(60)
