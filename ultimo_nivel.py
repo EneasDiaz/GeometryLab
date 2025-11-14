@@ -12,9 +12,15 @@ FPS = 60
 
 def el_nivel_3(config):
     FramePerSec = pygame.time.Clock()
-    pygame.mixer.music.load("D:/undertale ost/UNDERTALE Soundtrack/toby fox - UNDERTALE Soundtrack - 87 Hopes and Dreams.mp3")
+
+    pygame.mixer.init()
+    pygame.mixer.music.load("assets/sounds/Lvl3/Hopes_and_Dreams.mp3")
+    pygame.mixer.music.set_volume(config.get("volumen", 100) / 100)
+    pygame.mixer.music.play(-1)
+
     displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Game")
+    
     #para abajo clases y funciones de player
     class portal_cubo(pygame.sprite.Sprite):    
         def __init__(self, x, y, w=20, h=30):
@@ -34,7 +40,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,0))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/PNGS GEOMETRY LAB/pregunta.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/pregunta.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class cruz(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -42,7 +48,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,0))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/PNGS GEOMETRY LAB/PNG/Red/Double/check_square_color_cross.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/cruz_roja.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class tick(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -50,7 +56,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,0))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/PNGS GEOMETRY LAB/PNG/Red/Double/check_square_grey_checkmark.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/tick_blaco.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class portal_cohete(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -58,7 +64,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((120, 120, 120))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/portal_cohete.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/portal_cohete.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (w, h))
 
     class platf_amarilla(pygame.sprite.Sprite):
@@ -67,7 +73,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((120, 120, 120))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/PNGS GEOMETRY LAB/plataforma_salto.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/plataforma_salto.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (60, 40))
     class orbe_amarilla(pygame.sprite.Sprite):
         def __init__(self, x, y, w=22, h=22):
@@ -76,7 +82,7 @@ def el_nivel_3(config):
             self.surf.fill((0, 0, 255)) #agregar imagen para que no sea color basico
             self.rect = self.surf.get_rect(topleft=(x, y)) #hitbox rectangular
             self.usado=False
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/orbes/norm.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/orbe_amarilla.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (30, 30))
     class Spike(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -84,7 +90,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255, 255, 0)) #agregar imagen para que no sea color basico
             self.rect = self.surf.get_rect(topleft=(x, y)) #hitbox rectangular  
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/carpeta pinchos/spike.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/pincho.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (w+5, h+5))
 
     class SpikePlataforma(pygame.sprite.Sprite):
@@ -99,7 +105,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,0))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/PNGS GEOMETRY LAB/plataforma final.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/plataforma_final.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class platformBase(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -107,7 +113,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,255))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/PNGS GEOMETRY LAB/piso base.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/piso_base.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class platformGrande(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -115,7 +121,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,255))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/PNGS GEOMETRY LAB/set piso grande.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/set_piso_grande.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class platfpalo(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -123,12 +129,12 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,255))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("C:/Users/joaco/Pictures/PNGS GEOMETRY LAB/pared.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/pared.png").convert_alpha()
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class Player(pygame.sprite.Sprite):
         def __init__(self):
             super().__init__() 
-            self.original_surf = pygame.image.load("C:/Users/joaco/Pictures/PNGS GEOMETRY LAB/cubo jugador.jpg").convert_alpha()
+            self.original_surf = pygame.image.load("assets/img/obstaculos_jugador/cubo_jugador.jpg").convert_alpha()
             self.original_surf = pygame.transform.scale(self.original_surf, (35, 35))
             self.surf = self.original_surf.copy()
             self.rect = self.surf.get_rect(center = (10, 420))
