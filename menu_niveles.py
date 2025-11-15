@@ -74,7 +74,8 @@ def niveles(config):
                     elif opcion == "NIVEL 2":
                         print("Cargar nivel 2")
                     elif opcion == "NIVEL 3":
-                        print("Cargar nivel 3")
+                        from ultimo_nivel import el_nivel_3
+                        el_nivel_3(config)
                     elif opcion == "VOLVER":
                         return
 

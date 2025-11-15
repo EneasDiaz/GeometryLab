@@ -12,7 +12,8 @@ FPS = 60
 
 def el_nivel_3(config):
     FramePerSec = pygame.time.Clock()
-
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    
     pygame.mixer.init()
     pygame.mixer.music.load("assets/sounds/Lvl3/Hopes_and_Dreams.mp3")
     pygame.mixer.music.set_volume(config.get("volumen", 100) / 100)
@@ -20,35 +21,45 @@ def el_nivel_3(config):
 
     displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Game")
-    
+    fondo = pygame.image.load("assets/img/fondos/3er_lvl.jpg").convert()
+    fondo = pygame.transform.scale(fondo, (WIDTH, HEIGHT))
+
     #para abajo clases y funciones de player
-    class portal_cubo(pygame.sprite.Sprite):    
+    class portal_cubo(pygame.sprite.Sprite):   
+        
         def __init__(self, x, y, w=20, h=30):
             super().__init__()
             self.surf = pygame.Surface((w, h))
             self.surf.fill((120, 120, 120))
             self.rect = self.surf.get_rect(topleft=(x, y))
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/portal_cubo.png").convert_alpha()
+            self.surf = pygame.transform.scale(self.surf, (w, h))
     class portal_UFO(pygame.sprite.Sprite):
         def __init__(self, x, y, w=20, h=30):
             super().__init__()
             self.surf = pygame.Surface((w, h))
             self.surf.fill((120, 120, 120))
             self.rect = self.surf.get_rect(topleft=(x, y))
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/portal_ufo.png").convert_alpha()
+            self.surf = pygame.transform.scale(self.surf, (w, h))
+
+
     class pregunta(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
             super().__init__()
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,0))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("assets/img/plataformas_signos/pregunta.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/pregunta.png").convert_alpha()#assets/img/plataformas_signos/pregunta.png
             self.surf = pygame.transform.scale(self.surf, (w, h))
+
     class cruz(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
             super().__init__()
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,0))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("assets/img/plataformas_signos/cruz_roja.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/cruz_roja.png").convert_alpha()#assets/img/plataformas_signos/cruz_roja.png
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class tick(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -56,7 +67,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,0))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("assets/img/plataformas_signos/tick_blaco.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/tick_blaco.png").convert_alpha()#assets/img/plataformas_signos/tick_blaco.png
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class portal_cohete(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -64,7 +75,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((120, 120, 120))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("assets/img/obstaculos_jugador/portal_cohete.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/portal_cohete.png").convert_alpha()#assets/img/obstaculos_jugador/portal_cohete.png
             self.surf = pygame.transform.scale(self.surf, (w, h))
 
     class platf_amarilla(pygame.sprite.Sprite):
@@ -73,8 +84,11 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((120, 120, 120))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("assets/img/obstaculos_jugador/plataforma_salto.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/plataforma_salto.png").convert_alpha()#assets/img/obstaculos_jugador/plataforma_salto.png
             self.surf = pygame.transform.scale(self.surf, (60, 40))
+            
+
+
     class orbe_amarilla(pygame.sprite.Sprite):
         def __init__(self, x, y, w=22, h=22):
             super().__init__()
@@ -82,16 +96,19 @@ def el_nivel_3(config):
             self.surf.fill((0, 0, 255)) #agregar imagen para que no sea color basico
             self.rect = self.surf.get_rect(topleft=(x, y)) #hitbox rectangular
             self.usado=False
-            self.surf = pygame.image.load("assets/img/obstaculos_jugador/orbe_amarilla.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/orbe_amarilla.png").convert_alpha()#assets/img/obstaculos_jugador/orbe_amarilla.png
             self.surf = pygame.transform.scale(self.surf, (30, 30))
+
+            
     class Spike(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
             super().__init__()
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255, 255, 0)) #agregar imagen para que no sea color basico
             self.rect = self.surf.get_rect(topleft=(x, y)) #hitbox rectangular  
-            self.surf = pygame.image.load("assets/img/obstaculos_jugador/pincho.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/pincho.png").convert_alpha()#assets/img/obstaculos_jugador/pincho.png
             self.surf = pygame.transform.scale(self.surf, (w+5, h+5))
+
 
     class SpikePlataforma(pygame.sprite.Sprite):
         def __init__(self, x, y, w=30, h=30):
@@ -99,13 +116,17 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255, 0, 0)) #agregar imagen para que no sea color basico
             self.rect = self.surf.get_rect(topleft=(x, y)) #hitbox rectangular
+            self.surf.set_alpha(0)
+            
+
+
     class platform(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
             super().__init__()
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,0))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("assets/img/plataformas_signos/plataforma_final.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/plataforma_final.png").convert_alpha()#assets/img/plataformas_signos/plataforma_final.png
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class platformBase(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -113,7 +134,7 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,255))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("assets/img/plataformas_signos/piso_base.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/piso_base.png").convert_alpha()#assets/img/plataformas_signos/piso_base.png
             self.surf = pygame.transform.scale(self.surf, (w, h))
     class platformGrande(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
@@ -121,26 +142,35 @@ def el_nivel_3(config):
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,255))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("assets/img/plataformas_signos/set_piso_grande.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/plataformas_signos/set_piso_grande.png").convert_alpha()#assets/img/plataformas_signos/set_piso_grande.png
             self.surf = pygame.transform.scale(self.surf, (w, h))
+
     class platfpalo(pygame.sprite.Sprite):
         def __init__(self, x, y, w, h):
             super().__init__()
             self.surf = pygame.Surface((w, h))
             self.surf.fill((255,0,255))
             self.rect = self.surf.get_rect(topleft=(x, y))
-            self.surf = pygame.image.load("assets/img/obstaculos_jugador/pared.png").convert_alpha()
+            self.surf = pygame.image.load("assets/img/obstaculos_jugador/pared.png").convert_alpha()#assets/img/obstaculos_jugador/pared.png
             self.surf = pygame.transform.scale(self.surf, (w, h))
+            
+
+
     class Player(pygame.sprite.Sprite):
         def __init__(self):
             super().__init__() 
-            self.original_surf = pygame.image.load("assets/img/obstaculos_jugador/cubo_jugador.jpg").convert_alpha()
+            self.original_surf = pygame.image.load("assets/img/obstaculos_jugador/cubo_jugador.jpg").convert_alpha()#assets/img/obstaculos_jugador/cubo_jugador.jpg
             self.original_surf = pygame.transform.scale(self.original_surf, (35, 35))
+
             self.surf = self.original_surf.copy()
+
             self.rect = self.surf.get_rect(center = (10, 420))
-            self.pos = vec((0, 380))
+
+
+            self.pos = vec((0, 400))
             self.vel = vec(0,0)
             self.acc = vec(0,0)
+
             self.angulo = False
             self.saltable = False
             self.modo_cohete = True
@@ -153,6 +183,7 @@ def el_nivel_3(config):
             self.vel.y+=0.23
             self.pos += self.vel 
             self.rect.midbottom = self.pos 
+
             if self.modo_cohete:
                 mouse = pygame.mouse.get_pressed()
                 keys = pygame.key.get_pressed()
@@ -194,6 +225,11 @@ def el_nivel_3(config):
                 if pygame.sprite.spritecollide(self, [portal], False):
                     self.modo_ufo=True
                     self.modo_cohete=False
+            for portal in portales_cubo:
+                if pygame.sprite.spritecollide(self, [portal], False):
+                    self.modo_ufo=False
+                    self.modo_cohete=False
+
         def salto(self):
             if self.saltable:
                 self.vel.y=-5
@@ -203,8 +239,12 @@ def el_nivel_3(config):
             for orbe in orbes_amarillas:
                 if pygame.sprite.spritecollide(self, [orbe], False):
                     orbe.usado = True
+            
+    
+
     #para arriba clases y funciones
     #para abajo estructuras y musica
+
     font = pygame.font.SysFont(None, 30)    
     imagenes = pygame.sprite.Group()
     palos=pygame.sprite.Group()
@@ -217,11 +257,23 @@ def el_nivel_3(config):
         plat = platformBase(i * 201, HEIGHT - 20, 200, 20)
         platforms.add(plat)
 
+
     P1 = Player()
     all_sprites = pygame.sprite.Group()
     spikes = pygame.sprite.Group()
     orbes_amarillas = pygame.sprite.Group()
     portales_cubo = pygame.sprite.Group()
+    pygame.mixer.music.play(-1)
+    for i in range(50):
+        spikes.add(Spike(483 + i*40, 405, 30, 30))
+    for i in range(36):
+        spikes.add(Spike(3200 + i*40, 405, 30, 30))
+    for i in range(100):
+        plataformasGrandes.add(platformGrande(10000 + i*150, 10, 150, 10))
+        spikes.add(SpikePlataforma(10000 + i*150, -10, 150, 5))
+
+        plataformasGrandes.add(platformGrande(12000 + i*150, 440, 150, 10))
+        spikes.add(SpikePlataforma(12000 + i*150, 430, 150, 5))
     #1er platf
     platforms.add(platform(500, 380, 100, 20))
     spikes.add(SpikePlataforma(500, 383, 30, 25)) 
@@ -237,7 +289,7 @@ def el_nivel_3(config):
     platforms.add(platform(1500, 380, 200, 20))
     spikes.add(SpikePlataforma(1500, 384, 30, 25))
     #6ta platf
-    
+
     #7ma platf
     platforms.add(platform(1820, 400, 650, 20))
     spikes.add(Spike(2140, 380, 30, 25))
@@ -259,10 +311,10 @@ def el_nivel_3(config):
     platforms.add(platform(4460, 300, 40, 10))
     spikes.add(SpikePlataforma(4450, 305, 10, 10))
     #13 pincho
-    spikes.add(Spike(4870, 405, 30, 25))
-    spikes.add(Spike(4910, 405, 30, 25))
-    spikes.add(Spike(4950, 405, 30, 25))
-    spikes.add(Spike(4990, 405, 30, 25))
+    spikes.add(Spike(4880, 405, 30, 25))
+    spikes.add(Spike(4920, 405, 30, 25))
+    spikes.add(Spike(4960, 405, 30, 25))
+    spikes.add(Spike(5000, 405, 30, 25))
     #14 orbe
     orbes_amarillas.add(orbe_amarilla(5350, 380))
 
@@ -274,21 +326,21 @@ def el_nivel_3(config):
     spikes.add(Spike(5530, 400, 30, 25))
     spikes.add(Spike(5530, 380, 30, 25))
     #16 orbe
-    orbes_amarillas.add(orbe_amarilla(5710, 360))
+    orbes_amarillas.add(orbe_amarilla(5700, 360))
     #17 pinchos
-    spikes.add(Spike(5700, 405, 30, 25))
-    spikes.add(Spike(5740, 405, 30, 25))
-    spikes.add(Spike(5780, 405, 30, 25))
-    spikes.add(Spike(5820, 405, 30, 25))
-    spikes.add(Spike(5860, 405, 30, 25))
+    spikes.add(Spike(5690, 405, 30, 25))
+    spikes.add(Spike(5730, 405, 30, 25))
+    spikes.add(Spike(5770, 405, 30, 25))
+    spikes.add(Spike(5810, 405, 30, 25))
+    spikes.add(Spike(5850, 405, 30, 25))
     #18 platf
     platforms.add(platform(6166, 375, 100, 10))
     for i in range(3):
         spikes.add(Spike(6160 + i*40, 355, 25, 25))
     #19 pincho
-    spikes.add(Spike(6340, 405, 30, 25))
-    spikes.add(Spike(6400, 405, 30, 25))
-    spikes.add(Spike(6460, 405, 30, 25))
+    spikes.add(Spike(6340, 408, 30, 25))
+    spikes.add(Spike(6400, 408, 30, 25))
+    spikes.add(Spike(6460, 408, 30, 25))
     #20 platf
     spikes.add(Spike(7050, 410, 30, 25))
     platforms.add(platform(7100, 380, 200, 10))
@@ -344,12 +396,17 @@ def el_nivel_3(config):
     spikes.add(SpikePlataforma(11500, 110, 10, 170))
     #35 platfs palos
     palos.add(platfpalo(13000, 300, 20, 150))
+    spikes.add(SpikePlataforma(13000, 300, 20, 150))
     palos.add(platfpalo(13000, 0, 20, 200))
+    spikes.add(SpikePlataforma(13000, 0, 20, 200))
     #36 platfs palos
     palos.add(platfpalo(13250, 0, 20, 300))
+    spikes.add(SpikePlataforma(13250, 0, 20, 300))
     palos.add(platfpalo(13250, 380, 20, 70))
+    spikes.add(SpikePlataforma(13250, 380, 20, 70))
     #37 platfs palos
     palos.add(platfpalo(12600, 200, 20, 150))
+    spikes.add(SpikePlataforma(12600, 200, 20, 150))
 
     #38 platfs
     plataformasGrandes.add(platformGrande(13700, 350, 300, 200))
@@ -365,102 +422,122 @@ def el_nivel_3(config):
     plataformas_amarillas.add(platf_amarilla(15980, 380, 20, 20))
 
     #40 palo
-    palos.add(platfpalo(16200, 230, 20, 340))
-    palos.add(platfpalo(16200, 0, 20, 150))
+    palos.add(platfpalo(16200, 235, 20, 340))
+    spikes.add(SpikePlataforma(16200, 235, 20, 340))
+    palos.add(platfpalo(16200, 0, 20, 140))
+    spikes.add(SpikePlataforma(16200, 0, 20, 140))
 
     #41 palo
-    palos.add(platfpalo(16550, 0, 20, 215))
-    palos.add(platfpalo(16550, 300, 20, 300))
-    pygame.mixer.music.play(-1)
-    for i in range(50):
-        spikes.add(Spike(483 + i*40, 405, 30, 30))
-    for i in range(36):
-        spikes.add(Spike(3200 + i*40, 405, 30, 30))
-    for i in range(100):
-        plataformasGrandes.add(platformGrande(10000 + i*150, 10, 150, 10))
-        spikes.add(SpikePlataforma(10000 + i*150, -10, 150, 5))
+    palos.add(platfpalo(16650, 0, 20, 215))
+    spikes.add(SpikePlataforma(16650, 0, 20, 215))
 
-        plataformasGrandes.add(platformGrande(12000 + i*150, 440, 150, 10))
-        spikes.add(SpikePlataforma(12000 + i*150, 430, 150, 5))
+    palos.add(platfpalo(16550, 300, 20, 300))
+    spikes.add(SpikePlataforma(16550, 300, 20, 300))
+
+
+        
     palos.add(platfpalo(17400, 0, 20, 450))
     imagenes.add(cruz(17300, 60, 80, 80))
+    spikes.add(SpikePlataforma(17400, 0, 20, 170))
     imagenes.add(tick(17300, 200, 80, 80))
+
     imagenes.add(cruz(17300, 360, 80, 80))
+    spikes.add(SpikePlataforma(17400, 340, 20, 90))
 
     palos.add(platfpalo(18000, 0, 20, 450))
     imagenes.add(cruz(17900, 60, 80, 80))
     imagenes.add(cruz(17900, 200, 80, 80))
+    spikes.add(SpikePlataforma(18000, 0, 20, 320))
     imagenes.add(tick(17900, 360, 80, 80))
 
     palos.add(platfpalo(18600, 0, 20, 450))
     imagenes.add(cruz(18500, 60, 80, 80))
     imagenes.add(cruz(18500, 200, 80, 80))
+    spikes.add(SpikePlataforma(18600, 0, 20, 320))
     imagenes.add(tick(18500, 360, 80, 80))
 
     palos.add(platfpalo(19200, 0, 20, 450))
     imagenes.add(tick(19100, 60, 80, 80))
     imagenes.add(cruz(19100, 200, 80, 80))
     imagenes.add(cruz(19100, 360, 80, 80))
+    spikes.add(SpikePlataforma(19200, 170, 20, 280))
 
     imagenes.add(pregunta(19700, 150, 200, 200))
 
     palos.add(platfpalo(20300, 0, 20, 450))
     imagenes.add(pregunta(20200, 60, 80, 80))
+    spikes.add(SpikePlataforma(20300, 0, 20, 170))
     imagenes.add(pregunta(20200, 200, 80, 80))
+
     imagenes.add(pregunta(20200, 360, 80, 80))
+    spikes.add(SpikePlataforma(20300, 320, 20, 130))
 
     palos.add(platfpalo(20900, 0, 20, 450))
     imagenes.add(pregunta(20800, 60, 80, 80))
     imagenes.add(pregunta(20800, 200, 80, 80))
     imagenes.add(pregunta(20800, 360, 80, 80))
+    spikes.add(SpikePlataforma(20900, 0, 20, 320))
 
     palos.add(platfpalo(21400, 0, 20, 450))
     imagenes.add(pregunta(21300, 60, 80, 80))
     imagenes.add(pregunta(21300, 200, 80, 80))
     imagenes.add(pregunta(21300, 360, 80, 80))
+    spikes.add(SpikePlataforma(21400, 0, 20, 320))
 
     palos.add(platfpalo(22000, 0, 20, 450))
     imagenes.add(pregunta(21900, 60, 80, 80))
     imagenes.add(pregunta(21900, 200, 80, 80))
     imagenes.add(pregunta(21900, 360, 80, 80))
+    spikes.add(SpikePlataforma(22000, 170, 20, 280))
 
 
-
-    portales_ufo.add(portal_UFO(22600, 240, 20, 60))
+    portales_ufo.add(portal_UFO(22600, 240, 40, 80))
     palos.add(platfpalo(22600, 0, 20, 200))
+    spikes.add(SpikePlataforma(22600, 0, 20, 200))
     palos.add(platfpalo(22600, 350, 20, 100))
-
+    spikes.add(SpikePlataforma(22600, 350, 20, 100))
+    ########## primer seccion
 
     palos.add(platfpalo(23000, 0, 20, 300))
+    spikes.add(SpikePlataforma(23000, 0, 20, 300))
     palos.add(platfpalo(23000, 400, 20, 50))
+    spikes.add(SpikePlataforma(23000, 400, 20, 50))
 
-    palos.add(platfpalo(23130, 0, 20, 200))
-    palos.add(platfpalo(23130, 300, 20, 150))
+    palos.add(platfpalo(23230, 0, 20, 200))
+    spikes.add(SpikePlataforma(23230, 0, 20, 200))
+    palos.add(platfpalo(23230, 300, 20, 150))
+    spikes.add(SpikePlataforma(23230, 300, 20, 150))
 
-    palos.add(platfpalo(23270, 0, 20, 80))
-    palos.add(platfpalo(23270, 250, 20, 250))
+    palos.add(platfpalo(23370, 0, 20, 80))
+    spikes.add(SpikePlataforma(23370, 0, 20, 80))
+    palos.add(platfpalo(23370, 250, 20, 250))
+    spikes.add(SpikePlataforma(23370, 250, 20, 250))
+    ###################################### 
+    #segunda seccion
+    palos.add(platfpalo(23970, 0, 20, 330))
+    spikes.add(SpikePlataforma(23970, 0, 20, 330))
+    palos.add(platfpalo(23970, 400, 20, 50))
+    spikes.add(SpikePlataforma(23970, 400, 20, 50))
 
-    palos.add(platfpalo(23770, 0, 20, 330))
-    palos.add(platfpalo(23770, 400, 20, 50))
-
-    palos.add(platfpalo(24000, 0, 20, 220))
-    palos.add(platfpalo(24000, 300, 20, 150))
+    palos.add(platfpalo(24150, 0, 20, 260))
+    spikes.add(SpikePlataforma(24150, 0, 20, 260))
+    palos.add(platfpalo(24150, 360, 20, 90))
+    spikes.add(SpikePlataforma(24150, 360, 20, 90))
 
     palos.add(platfpalo(24400, 0, 20, 150))
+    spikes.add(SpikePlataforma(24400, 0, 20, 150))
     palos.add(platfpalo(24400, 250, 20, 200))
+    spikes.add(SpikePlataforma(24400, 250, 20, 200))
 
-    palos.add(platfpalo(24600, 0, 20, 40))
-    palos.add(platfpalo(24600, 150, 20, 350))
+    palos.add(platfpalo(24600, 0, 20, 80))
+    spikes.add(SpikePlataforma(24600, 0, 20,80))
+    palos.add(platfpalo(24600, 190, 20, 260))
+    spikes.add(SpikePlataforma(24600, 190, 20, 260))
 
-    plataformasGrandes.add(platformGrande(25500, 0, 1500, 150))
-    platforms.add(platform(25300, 190, 700, 20))
-    plataformasGrandes.add(platformGrande(25000, 200, 1000, 250))
 
-    plataformasGrandes.add(platformGrande(26000, 500, 150, 400))
 
-    plataformasGrandes.add(platformGrande(26700, 0, 400, 330))
-    platforms.add(platform(26400, 370, 700, 20))
-    plataformasGrandes.add(platformGrande(26400, 380, 700, 150))
+
+
 
     all_sprites.add(portales_cubo)
     all_sprites.add(imagenes)
@@ -483,8 +560,11 @@ def el_nivel_3(config):
             if event.type==pygame.MOUSEBUTTONDOWN:
                 if event.button==1:
                     P1.salto()
+        screen.blit(fondo, (0, 0))
+        
         teclas = pygame.key.get_pressed()
-        displaysurface.fill((0,0,0))
+        camera_offset_x = P1.pos.x - WIDTH // 2
+        
         P1.move()
         P1.update()
         if pygame.sprite.spritecollide(P1, spikes, False):
@@ -507,6 +587,7 @@ def el_nivel_3(config):
     
         pygame.display.update()
         FramePerSec.tick(FPS)
+    
 
 
 
