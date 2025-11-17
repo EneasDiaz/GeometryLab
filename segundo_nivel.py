@@ -724,9 +724,11 @@ def el_nivel_2(config):
                         pygame.mixer.music.pause()
                     else:
                         pygame.mixer.music.unpause()
-            if event.type==pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button==1:
                     P1.salto()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                P1.salto()
             
         screen.blit(fondo, (0, 0))
         progress_bar.update(P1.pos.x)
