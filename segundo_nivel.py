@@ -55,11 +55,8 @@ def el_nivel_2(config):
         
         def draw(self):
     
-            # fondo
             pygame.draw.rect(self.screen, self.bg_color, (*self.position, self.width, self.height))
-            # barra de progreso
             pygame.draw.rect(self.screen, self.color, (*self.position, self.current_width, self.height))
-            # porcentaje
             if self.show_text:
                 text = self.font.render(f"{self.progress_percent}%", True, (255, 255, 255))
                 text_x = self.position[0] + self.width + 10
@@ -147,7 +144,7 @@ def el_nivel_2(config):
         def __init__(self, x, y, w=40, h=10):
             super().__init__()
             self.surf = pygame.Surface((w, h))
-            self.surf.fill((0, 0, 255)) # Color Azul
+            self.surf.fill((0, 0, 255)) 
             self.rect = self.surf.get_rect(topleft=(x, y))
 
 
@@ -578,7 +575,6 @@ def el_nivel_2(config):
     platforms.add(platform(28220, 370, 60, 80))    # suelo
     spikes.add(Spike(28220, 350, 40, 40)) 
 
-    #plataformas horizontales
     platforms.add(platform(29300, 100, 50, 20))
     spikes.add(Spike(29300, 80, 40, 40))
     platforms.add(platform(29450, 270, 50, 20))
