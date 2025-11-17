@@ -23,6 +23,7 @@ def el_nivel_3(config):
 
 
     sonido_muerte = pygame.mixer.Sound("assets/sounds/muerte/candidato_muerte.wav")
+    sonido_muerte.set_volume(config.get("volumen", 100)/100)
 
     displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Game")
@@ -222,8 +223,7 @@ def el_nivel_3(config):
             self.saltable = False
             self.modo_cohete = False
             self.modo_ufo = False
-            self.cohete_img = pygame.Surface((50, 25)) 
-            self.cohete_img.fill((255, 150, 0))
+
 
         def move(self):
             self.vel.x=8
@@ -359,7 +359,6 @@ def el_nivel_3(config):
     platforms.add(platform(4460, 300, 40, 10))
     spikes.add(SpikePlataforma(4450, 305, 10, 10))
     #13 pincho
-    spikes.add(Spike(4880, 405, 30, 25))
     spikes.add(Spike(4920, 405, 30, 25))
     spikes.add(Spike(4960, 405, 30, 25))
     spikes.add(Spike(5000, 405, 30, 25))
@@ -791,6 +790,9 @@ def el_nivel_3(config):
             if event.type==pygame.MOUSEBUTTONDOWN:
                 if event.button==1:
                     P1.salto()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                P1.salto()
+
             
         screen.blit(fondo, (0, 0))
         progress_bar.update(P1.pos.x)
@@ -865,7 +867,11 @@ def el_nivel_3(config):
         for entity in all_sprites:
             displaysurface.blit(entity.surf, (entity.rect.x - camera_offset_x, entity.rect.y))
         
-        
+        brillo = config.get("brillo", 100)
+        oscuridad = 200 - int(200 * (brillo / 100))
+        filtro = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        filtro.fill((0, 0, 0, oscuridad))
+        screen.blit(filtro, (0, 0))
     
         pygame.display.update()
         FramePerSec.tick(FPS)

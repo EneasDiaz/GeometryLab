@@ -1,6 +1,7 @@
 import sys
 import os
 import pygame
+from audio import musica_menu
 
 WIDTH, HEIGHT = 960, 540
 FPS = 60
@@ -12,6 +13,8 @@ BLACK = (0, 0, 0)
 
 def niveles(config):
     pygame.init()
+
+    musica_menu(config)
 
     BASE = os.path.dirname(__file__)
     FONT_TITLE = os.path.join(BASE, "assets", "fonts", "ARCADE_I.TTF")
@@ -31,15 +34,15 @@ def niveles(config):
 
     #imagenes de las cabezas
     primera_cara = pygame.image.load("assets/img/dificultades_caras/carita_lvl_1.jpg")
-    primera_cara = pygame.transform.scale(primera_cara, (TAMANIO_CABEZAS))
+    primera_cara = pygame.transform.smoothscale(primera_cara, (TAMANIO_CABEZAS))
     primera_cara_rect = primera_cara.get_rect(center=(WIDTH // 2 - 250, HEIGHT // 2 + 70))
 
     segunda_cara = pygame.image.load("assets/img/dificultades_caras/carita_lvl_2.png")
-    segunda_cara = pygame.transform.scale(segunda_cara, (TAMANIO_CABEZAS))
+    segunda_cara = pygame.transform.smoothscale(segunda_cara, (TAMANIO_CABEZAS))
     segunda_cara_rect = segunda_cara.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 70))
 
     tercera_cara = pygame.image.load("assets/img/dificultades_caras/carita_lvl_3.png")
-    tercera_cara = pygame.transform.scale(tercera_cara, (TAMANIO_CABEZAS))
+    tercera_cara = pygame.transform.smoothscale(tercera_cara, (TAMANIO_CABEZAS))
     tercera_cara_rect = tercera_cara.get_rect(center=(WIDTH // 2 + 250, HEIGHT // 2 + 70))
 
     
@@ -86,7 +89,6 @@ def niveles(config):
                         from primer_nivel import el_nivel_1
                         el_nivel_1(config)
                     elif opcion == "NIVEL 2":
-                        print("ingreso seguindo nivel")
                         from segundo_nivel import el_nivel_2
                         el_nivel_2(config)
                     elif opcion == "NIVEL 3":

@@ -1,6 +1,7 @@
 import sys
 import os
 import pygame
+from audio import musica_menu
 
 WIDTH, HEIGHT = 960, 540
 FPS = 60
@@ -29,8 +30,17 @@ def extras(config):
     fuente_texto  = pygame.font.Font(FONT_LIST, 28)
 
 
-    opciones = ["VOLVER"]
+    canciones = [
+        ("MENU: UNDERTALE - START MENU", (255, 180, 255), "assets/sounds/MusicaMenu/menu.mp3"),
+        ("NIVEL 1: UNDERTALE - RUDER BUSTER", (255, 120, 200), "assets/sounds/Lvl1/Ruder_Buster.mp3"),
+        ("NIVEL 2: UNDERTALE - ASGORE ", (100, 200, 255), "assets/sounds/Lvl2/ASGORE.mp3"),
+        ("NIVEL 3: UNDERTALE - HOPES AND DREAMS", (120, 120, 255), "assets/sounds/Lvl3/Hopes_and_Dreams.mp3"),
+    ]
+
+    NUM_OPCIONES = len(canciones) + 1
+
     eleccion = 0
+    pista_actual = None
 
     anda = True
     while anda:
@@ -42,47 +52,62 @@ def extras(config):
             elif event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_ESCAPE:
-                    from menu_inicio import inicio
-                    inicio(config)
+
+                    if pygame.mixer.get_init():
+                        pygame.mixer.music.stop()
+                    musica_menu(config)
                     return
 
                 elif event.key == pygame.K_UP:
-                    eleccion = (eleccion - 1) % len(opciones)
+                    eleccion = (eleccion - 1) % NUM_OPCIONES
 
                 elif event.key == pygame.K_DOWN:
-                    eleccion = (eleccion + 1) % len(opciones)
+                    eleccion = (eleccion + 1) % NUM_OPCIONES
 
                 elif event.key == pygame.K_RETURN:
-                    opcion = opciones[eleccion]
 
-                    if opcion == "VOLVER":
+                    if eleccion == len(canciones):
+                        if pygame.mixer.get_init():
+                            pygame.mixer.music.stop()
+                        musica_menu(config)
                         return
+
+        if eleccion < len(canciones):
+            if eleccion != pista_actual:
+                texto, color, ruta_mp3 = canciones[eleccion]
+                try:
+                    if not pygame.mixer.get_init():
+                        pygame.mixer.init()
+                    pygame.mixer.music.load(ruta_mp3)
+                    pygame.mixer.music.set_volume(config.get("volumen", 100) / 100)
+                    pygame.mixer.music.play(-1)
+                    pista_actual = eleccion
+                except Exception as e:
+                    print(f"Error cargando {ruta_mp3}: {e}")
+            pass
 
 
         ventana.blit(fondo, (0, 0))
-
 
         titulo = fuente_titulo.render("CANCIONES", True, WHITE)
         ubic_titulo = titulo.get_rect(center=(WIDTH // 2, HEIGHT // 5 - 30))
         ventana.blit(titulo, ubic_titulo)
 
-
-        labels = [
-            ("MENU: UNDERTALE - START MENU", (255, 180, 255)),
-            ("NIVEL 1: UNDERTALE - RUDER BUSTER", (255, 120, 200)),
-            ("NIVEL 2: UNDERTALE - ASGORE ", (100, 200, 255)),
-            ("NIVEL 3: UNDERTALE - HOPES AND DREAMS", (120, 120, 255)),
-        ]
-
         top_info = HEIGHT // 2 - 130
-        for i, (texto, color) in enumerate(labels):
-            item = fuente_texto.render(texto, True, color)
+
+
+        for i, (texto, color, _) in enumerate(canciones):
+            seleccionado = (eleccion == i)
+            color_texto = GREEN if seleccionado else color
+
+            item = fuente_texto.render(texto, True, color_texto)
             rect = item.get_rect(center=(WIDTH // 2, top_info + i * 60))
             ventana.blit(item, rect)
 
 
-        seleccionado = (eleccion == 0)
-        color_item = GREEN if seleccionado else (180, 180, 200)
+        idx_volver = len(canciones)
+        seleccionado_volver = (eleccion == idx_volver)
+        color_item = GREEN if seleccionado_volver else (180, 180, 200)
 
         volver = fuente_texto.render("VOLVER", True, color_item)
         rect_volver = volver.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 180))

@@ -19,10 +19,16 @@ def el_nivel_1(config):
     
 
     sonido_muerte = pygame.mixer.Sound("assets/sounds/muerte/candidato_muerte.wav")
+
     pygame.mixer.music.load("assets/sounds/Lvl1/Ruder_Buster.mp3")
+    volumen = config.get("volumen", 100)/100
+    pygame.mixer.music.set_volume(volumen)
+    sonido_muerte.set_volume(volumen)
+
+
+
     displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Level 1")
-
 
 
     fondo = pygame.image.load("assets/img/fondos/1er_lvl.png").convert()   
@@ -193,7 +199,7 @@ def el_nivel_1(config):
     class Player(pygame.sprite.Sprite):
         def __init__(self):
             super().__init__() 
-            self.original_surf = pygame.image.load("/home/dago/GeometryLab/assets/img/obstaculos_jugador/cubo_jugador_1.png").convert_alpha()
+            self.original_surf = pygame.image.load("assets/img/obstaculos_jugador/cubo_jugador_1.png").convert_alpha()
             self.original_surf = pygame.transform.scale(self.original_surf, (35, 35))
 
             self.surf = self.original_surf.copy()
@@ -725,6 +731,12 @@ def el_nivel_1(config):
         progress_bar.update(P1.pos.x)
         progress_bar.draw()
     
+        brillo = config.get("brillo", 100)
+        oscuridad = 200 - int(200 * (brillo / 100))
+        filtro = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        filtro.fill((0, 0, 0, oscuridad))
+        screen.blit(filtro, (0, 0))
+
         pygame.display.update()
         FramePerSec.tick(FPS)
 

@@ -1,6 +1,7 @@
 import sys  
 import pygame 
 
+from audio import musica_menu
 from menu_niveles import niveles
 from menu_settings import settings
 from menu_extras import extras
@@ -29,10 +30,7 @@ def inicio(config):
     pygame.init()
 
 
-    pygame.mixer.init()
-    pygame.mixer.music.load("assets/sounds/MusicaMenu/menu.mp3")
-    pygame.mixer.music.set_volume(config.get("volumen", 100) / 100)
-    pygame.mixer.music.play(-1)
+    musica_menu(config)
 
 
     lista_inicio = ["NIVELES", "CREADORES", "EXTRAS", "SETTINGS", "SALIR"] 
