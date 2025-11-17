@@ -55,7 +55,7 @@ def extras(config):
 
                     if pygame.mixer.get_init():
                         pygame.mixer.music.stop()
-                    musica_menu(config)
+                    musica_menu(config, forzar=True)
                     return
 
                 elif event.key == pygame.K_UP:
@@ -66,10 +66,10 @@ def extras(config):
 
                 elif event.key == pygame.K_RETURN:
 
-                    if eleccion == len(canciones):
+                    if eleccion == len(canciones):  # VOLVER
                         if pygame.mixer.get_init():
                             pygame.mixer.music.stop()
-                        musica_menu(config)
+                        musica_menu(config, forzar=True)
                         return
 
         if eleccion < len(canciones):
