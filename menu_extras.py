@@ -69,9 +69,9 @@ def extras(config):
 
         labels = [
             ("MENU: UNDERTALE - START MENU", (255, 180, 255)),
-            ("NIVEL 1: UNDERTALE - HOPES AND DREAMS", (255, 120, 200)),
-            ("NIVEL 2: UNDERTALE - RUDY BUSTER", (100, 200, 255)),
-            ("NIVEL 3: UNDERTALE - ASGORE", (120, 120, 255)),
+            ("NIVEL 1: UNDERTALE - RUDER BUSTER", (255, 120, 200)),
+            ("NIVEL 2: UNDERTALE - ASGORE ", (100, 200, 255)),
+            ("NIVEL 3: UNDERTALE - HOPES AND DREAMS", (120, 120, 255)),
         ]
 
         top_info = HEIGHT // 2 - 130

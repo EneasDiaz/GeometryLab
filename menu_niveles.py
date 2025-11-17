@@ -4,6 +4,7 @@ import pygame
 
 WIDTH, HEIGHT = 960, 540
 FPS = 60
+TAMANIO_CABEZAS = 100,100
 
 WHITE = (255, 255, 255)
 GREEN = (158, 240, 26)
@@ -28,6 +29,19 @@ def niveles(config):
     fuente_titulo = pygame.font.Font(FONT_TITLE, 70)
     fuente_item  = pygame.font.Font(FONT_LIST, 40)
 
+    #imagenes de las cabezas
+    primera_cara = pygame.image.load("assets/img/dificultades_caras/carita_lvl_1.jpg")
+    primera_cara = pygame.transform.scale(primera_cara, (TAMANIO_CABEZAS))
+    primera_cara_rect = primera_cara.get_rect(center=(WIDTH // 2 - 250, HEIGHT // 2 + 70))
+
+    segunda_cara = pygame.image.load("assets/img/dificultades_caras/carita_lvl_2.png")
+    segunda_cara = pygame.transform.scale(segunda_cara, (TAMANIO_CABEZAS))
+    segunda_cara_rect = segunda_cara.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 70))
+
+    tercera_cara = pygame.image.load("assets/img/dificultades_caras/carita_lvl_3.png")
+    tercera_cara = pygame.transform.scale(tercera_cara, (TAMANIO_CABEZAS))
+    tercera_cara_rect = tercera_cara.get_rect(center=(WIDTH // 2 + 250, HEIGHT // 2 + 70))
+
     
     opciones = ["NIVEL 1", "NIVEL 2", "NIVEL 3", "VOLVER"]
     eleccion = 0
@@ -45,7 +59,6 @@ def niveles(config):
                 if event.key == pygame.K_ESCAPE:
                     from menu_inicio import inicio
                     inicio(config)
-                    return
 
                 
                 elif event.key == pygame.K_LEFT:
@@ -70,18 +83,24 @@ def niveles(config):
                     opcion = opciones[eleccion]
 
                     if opcion == "NIVEL 1":
-                        print("Cargar nivel 1")
+                        from primer_nivel import el_nivel_1
+                        el_nivel_1(config)
                     elif opcion == "NIVEL 2":
-                        print("Cargar nivel 2")
+                        print("ingreso seguindo nivel")
+                        # from segundo_nivel import el_nivel_2
+                        # el_nivel_2(config)
                     elif opcion == "NIVEL 3":
                         from ultimo_nivel import el_nivel_3
                         el_nivel_3(config)
                     elif opcion == "VOLVER":
-                        return
+                        from menu_inicio import inicio
+                        inicio(config)
 
 
         ventana.blit(fondo, (0, 0))
-
+        ventana.blit(primera_cara, primera_cara_rect)
+        ventana.blit(segunda_cara, segunda_cara_rect)
+        ventana.blit(tercera_cara, tercera_cara_rect)
 
         titulo = fuente_titulo.render("NIVELES", True, WHITE)
         ubic_titulo = titulo.get_rect(center=(WIDTH // 2, HEIGHT // 5 - 30))
@@ -108,7 +127,7 @@ def niveles(config):
         color = GREEN if seleccionado else (180, 180, 200)
 
         volver_item = fuente_item.render("VOLVER", True, color)
-        volver_rect = volver_item.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 140))
+        volver_rect = volver_item.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 180))
         ventana.blit(volver_item, volver_rect)
 
         brillo = config.get("brillo", 100)
@@ -120,8 +139,6 @@ def niveles(config):
         pygame.display.flip()
         clock.tick(FPS)
 
-    pygame.quit()
-    sys.exit()
 
 
 if __name__ == "__main__":
