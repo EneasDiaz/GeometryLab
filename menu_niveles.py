@@ -87,8 +87,8 @@ def niveles(config):
                         el_nivel_1(config)
                     elif opcion == "NIVEL 2":
                         print("ingreso seguindo nivel")
-                        # from segundo_nivel import el_nivel_2
-                        # el_nivel_2(config)
+                        from segundo_nivel import el_nivel_2
+                        el_nivel_2(config)
                     elif opcion == "NIVEL 3":
                         from ultimo_nivel import el_nivel_3
                         el_nivel_3(config)
